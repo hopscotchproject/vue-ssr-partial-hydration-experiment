@@ -2,8 +2,10 @@ const { join } = require('path')
 const express = require('express')
 const { v4 } = require('uuid')
 const cors = require('cors')
-const server = express()
 const { createBundleRenderer } = require('vue-server-renderer')
+const { generateInitScript } = require('./server-utils')
+
+const server = express()
 
 const template = require('fs').readFileSync(join(__dirname, '../public/index.html'), 'utf-8')
 const clientManifest = require(join(__dirname, '../dist/vue-ssr-client-manifest.json'))
@@ -16,12 +18,11 @@ const renderer = createBundleRenderer(join(__dirname, '../dist/vue-ssr-server-bu
 
 server.use(cors())
 
-server.use(express.static('./dist'))
-server.use('public', express.static('./public'))
+server.use('/dist', express.static('./dist'))
+// server.use('public', express.static('./public'))
 // server.use(express.static('./public'))
 
 server.get('/init', (req, res) => {
-  console.log(req.url, req.query)
   res.header('Content-Type', 'application/javascript')
   res.send(`
     window.__APP__.init('${req.query.partialId}')
@@ -49,7 +50,7 @@ server.get('*', (req, res) => {
     const augmentedHtml = `
       <div id="${context.partialId}">
         ${html}
-        <script src="/init?partialId=${context.partialId}" defer></script>
+        ${generateInitScript(context.partialId)}
         <script>
           if (!window.__VROUTE__) {
             window.__VROUTE__ = {}

@@ -3,7 +3,7 @@ import { createApp } from './app.js'
 if (!window.__APP__) {
   window.__APP__ = {
     init: partialId => {
-      console.log('INIT - ', partialId)
+      // console.log('INIT - ', partialId)
       const { app, router, store } = createApp()
       router.push(window.__VROUTE__[partialId])
       // if (window.__INITIAL_STATE__[partialId]) {
@@ -16,5 +16,19 @@ if (!window.__APP__) {
       app.$mount(`#${partialId}`)
     }
   }
+}
+
+if (module.hot) {
+  const api = require('vue-hot-reload-api');
+  const Vue = require('vue');
+
+  api.install(Vue);
+  if (!api.compatible) {
+    throw new Error(
+      'vue-hot-reload-api is not compatible with the version of Vue you are using.',
+    );
+  }
+
+  module.hot.accept();
 }
 

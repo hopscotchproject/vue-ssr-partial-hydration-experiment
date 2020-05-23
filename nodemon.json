@@ -1,0 +1,9 @@
+{
+  "verbose": false,
+  "watch": [
+    "dist/vue-ssr-server-bundle.json",
+    "src/server.js",
+    "proxyServer.js"
+  ],
+  "ext": "json,js"
+}

@@ -23,7 +23,6 @@ server.get('/', async (req, res) => {
 })
 
 server.get('*', (req, res) => {
-  console.log(req.url)
   res.redirect(`http://localhost:8080${req.url}`)
 })
 

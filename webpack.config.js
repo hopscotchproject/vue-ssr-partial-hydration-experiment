@@ -1,18 +1,10 @@
-const path = require('path')
+const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-// const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   mode: 'development',
-  // devServer: {
-  //   contentBase: path.join(__dirname, 'dist'),
-  //   index: './src/server.js',
-  //   compress: true,
-  //   port: 9000
-  // },
   module: {
     rules: [
-      // ... other rules
       {
         test: /\.vue$/,
         loader: 'vue-loader'
@@ -34,11 +26,10 @@ module.exports = {
     ]
   },
   plugins: [
-    // make sure to include the plugin!
     new VueLoaderPlugin(),
-    // new HtmlWebpackPlugin({
-    //   template: './public/index.html'
-    // }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    }),
   ]
 }
 
