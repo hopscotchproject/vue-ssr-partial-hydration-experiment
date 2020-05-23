@@ -5,6 +5,7 @@ const server = express()
 
 server.get('/', async (req, res) => {
   const homeHtml = await axios.get('http://localhost:8080')
+  const homeHtml2 = await axios.get('http://localhost:8080')
   const barHtml = await axios.get('http://localhost:8080/bar')
   res.send(`
   <!DOCTYPE html>
@@ -15,7 +16,11 @@ server.get('/', async (req, res) => {
       ${homeHtml.data}
     </div>
     <div>
-      <h2>Bar COMPONENT 2</h2>
+      <h2>Second HOME COMPONENT</h2>
+      ${homeHtml2.data}
+    </div>
+    <div>
+      <h2>Bar COMPONENT</h2>
       ${barHtml.data}
     </div>
   </html>

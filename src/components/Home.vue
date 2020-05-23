@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="root">
     <div>Home</div>
     <button @click="sayHello">Click!</button>
   </div>
@@ -15,3 +15,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#root {
+  background-color: orange;
+}
+</style>
