@@ -7,13 +7,24 @@ const { generateInitScript } = require('./server-utils')
 
 const server = express()
 
-const template = require('fs').readFileSync(join(__dirname, '../public/index.html'), 'utf-8')
 const clientManifest = require(join(__dirname, '../dist/vue-ssr-client-manifest.json'))
 
 const renderer = createBundleRenderer(join(__dirname, '../dist/vue-ssr-server-bundle.json'), {
   runInNewContext: false,
-  template, //(optional) page template
-  clientManifest // (optional) client build manifest
+  template: (result, context) => `
+  <div id="${context.partialId}">
+    ${context.renderStyles()}
+    ${context.renderResourceHints()}
+    ${result}
+    ${context.renderState({
+      contextKey: 'state',
+      windowKey: `__STATE__${context.partialId}`
+    })}
+    ${context.renderScripts()}
+    ${generateInitScript(context.partialId)}
+  </div>`,
+  clientManifest,
+  inject: false, // disable auto injuction to use template for finer control
 })
 
 server.use(cors())
@@ -34,7 +45,10 @@ server.get('*', (req, res) => {
   res.header('Content-Type', 'text/html')
   const context = {
     url: req.url,
-    partialId: `partial-id-${v4()}`
+    partialId: `partial_id_${v4().replace(/-/gi, '')}`, // remove hyphen to avoid syntax error when injecting scripts
+    body: req.body,
+    query: req.query,
+    params: req.params
   }
 
   // No need to pass an app here because it is auto-created by
@@ -44,22 +58,7 @@ server.get('*', (req, res) => {
       console.error(err)
       res.status(err.code).send(err.message)
     }
-
-    // Augment SSR'd html with mounting point for hydration
-    // Also inject script tag for deferred init
-    const augmentedHtml = `
-      <div id="${context.partialId}">
-        ${html}
-        ${generateInitScript(context.partialId)}
-        <script>
-          if (!window.__VROUTE__) {
-            window.__VROUTE__ = {}
-          }
-          window.__VROUTE__['${context.partialId}'] = '${req.url}'
-        </script>
-      </div>`
-    // handle error...
-    res.end(augmentedHtml)
+    res.end(html)
   })
 })
 

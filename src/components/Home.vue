@@ -1,5 +1,5 @@
 <template>
-  <div id="root">
+  <div id="root" :class="isBgBlue ? 'bg-blue' : ''">
     <div>Home</div>
     <button @click="sayHello">Click!</button>
   </div>
@@ -8,6 +8,7 @@
 <script>
 export default {
   name: 'Home',
+  props: ['isBgBlue'],
   methods: {
     sayHello() {
       alert('Hello!')
@@ -19,5 +20,9 @@ export default {
 <style scoped>
 #root {
   background-color: orange;
+}
+
+.bg-blue {
+  background-color: blue;
 }
 </style>
