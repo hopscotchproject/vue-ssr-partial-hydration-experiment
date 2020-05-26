@@ -13,8 +13,8 @@ const clientManifest = require(join(__dirname, '../dist/vue-ssr-client-manifest.
 const renderer = createBundleRenderer(join(__dirname, '../dist/vue-ssr-server-bundle.json'), {
   runInNewContext: false,
   template: (result, context) => `
+  ${context.renderStyles()}
   <div id="${context.partialId}">
-    ${context.renderStyles()}
     ${context.renderResourceHints()}
     ${result}
     ${context.renderState({
@@ -52,7 +52,6 @@ const handler = (req, res) => {
   // executing the bundle. Now our server is decoupled from our Vue app!
   renderer.renderToString(context, (err, html) => {
     if (err) {
-      console.error(err)
       res.status(err.code).send(err.message)
     }
     res.end(html)

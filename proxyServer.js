@@ -13,7 +13,8 @@ server.get('/', async (req, res) => {
   ])
   res.send(`
   <!DOCTYPE html>
-  <head></head>
+  <head>
+  </head>
   <html>
     <h1>PROXY SERVER MAIN PAGE</h1>
     <div>
