@@ -1,10 +1,9 @@
 {
-  "name": "learn-webpack",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "vue-ssr-partial-hydration-experiment",
+  "version": "0.0.1",
+  "description": "Experimental project to explore partial hydration with Vue SSR",
   "scripts": {
-    "start:proxy": "nodemon ./proxyServer.js",
+    "start:proxy": "nodemon ./mockLegacyServer.js",
     "start:helper-server": "node ./src/helper-server.js",
     "start:demo": "run-p start start:proxy",
     "dev": "run-s clean build:client:dev build:server:dev && cross-env NODE_ENV=development run-p watch:client watch:server start start:proxy start:helper-server",
@@ -18,8 +17,8 @@
     "start": "nodemon ./src/server.js",
     "clean": "rm -rf dist"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "@floydding",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",

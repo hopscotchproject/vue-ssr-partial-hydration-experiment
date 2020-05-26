@@ -1,46 +1,30 @@
 <template>
-  <div v-if="item">
-    Item: {{ item }}
-    <button @click="sayHee">hee</button>
+  <div id="root" :class="isBgBlue ? 'bg-blue' : ''">
+    <div>Foo</div>
+    <button @click="sayHello">Say Hello!</button>
+    <span>is backgroud blue</span>
+    <input type="checkbox" v-model="isBgBlue"/>
   </div>
-  <div v-else>loading...</div>
 </template>
 
 <script>
 export default {
-  name: 'Foo',
-  computed: {
-    // display the item from store state.
-    item () {
-      return this.$store.state.items[this.$route.params.id]
+  name: 'Home',
+  data() {
+    return {
+      isBgBlue: this.$store.state.isBgBlue
     }
   },
-
-  // Server-side only
-  // This will be called by the server renderer automatically
-  serverPrefetch () {
-    // return the Promise from the action
-    // so that the component waits before rendering
-    return this.fetchItem()
-  },
-
-  // Client-side only
-  mounted () {
-    // If we didn't already do it on the server
-    // we fetch the item (will first show the loading text)
-    if (!this.item) {
-      this.fetchItem()
-    }
-  },
-
   methods: {
-    fetchItem () {
-      // return the Promise from the action
-      return this.$store.dispatch('fetchItem', this.$route.params.id)
-    },
-    sayHee() {
-      alert('hee')
+    sayHello() {
+      alert('Hello!')
     }
   }
 }
 </script>
+
+<style scoped>
+.bg-blue {
+  background-color: cornflowerblue;
+}
+</style>

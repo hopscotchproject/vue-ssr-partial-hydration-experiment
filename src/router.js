@@ -7,8 +7,8 @@ export function createRouter () {
   return new Router({
     mode: 'abstract', // abstract mode so it doesn't change browser route
     routes: [
-      { path: '/home', component: () => import('./components/Home.vue') },
       { path: '/foo', component: () => import('./components/Foo.vue') },
+      { path: '/baz', component: () => import('./components/Baz.vue') },
       { path: '/bar', component: () => import('./components/Bar.vue') }
     ]
   })

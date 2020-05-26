@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-blue">
+  <div>
     <div>Bar</div>
-    <button @click="sayHello">Click!</button>
+    <button @click="sayBar">Say Bar!</button>
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 export default {
   name: 'Bar',
   methods: {
-    sayHello() {
+    sayBar() {
       alert('Bar!')
     }
   }
