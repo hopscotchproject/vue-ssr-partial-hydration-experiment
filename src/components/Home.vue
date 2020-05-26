@@ -2,13 +2,19 @@
   <div id="root" :class="isBgBlue ? 'bg-blue' : ''">
     <div>Home</div>
     <button @click="sayHello">Click!</button>
+    <span>is backgroud blue</span>
+    <input type="checkbox" v-model="isBgBlue"/>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Home',
-  props: ['isBgBlue'],
+  data() {
+    return {
+      isBgBlue: this.$store.state.isBgBlue
+    }
+  },
   methods: {
     sayHello() {
       alert('Hello!')
@@ -18,11 +24,7 @@ export default {
 </script>
 
 <style scoped>
-#root {
-  background-color: orange;
-}
-
 .bg-blue {
-  background-color: blue;
+  background-color: cornflowerblue;
 }
 </style>

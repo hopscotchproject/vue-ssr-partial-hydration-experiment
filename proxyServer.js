@@ -4,11 +4,16 @@ const axios = require('axios')
 const server = express()
 
 server.get('/', async (req, res) => {
-  const homeHtml = await axios.get('http://localhost:8080')
-  const homeHtml2 = await axios.get('http://localhost:8080')
-  const barHtml = await axios.get('http://localhost:8080/bar')
+  const [homeHtml, homeHtml2, barHtml] = await Promise.all([
+    axios.get('http://localhost:8080/home'),
+    axios.post('http://localhost:8080/home', {
+      isBgBlue: true
+    }),
+    axios.get('http://localhost:8080/bar')
+  ])
   res.send(`
   <!DOCTYPE html>
+  <head></head>
   <html>
     <h1>PROXY SERVER MAIN PAGE</h1>
     <div>

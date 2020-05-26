@@ -4,7 +4,6 @@ if (!window.__APP__) {
   window.__APP__ = {
     init: partialId => {
       const { app, router, store } = createApp()
-      // router.push(window.__VROUTE__[partialId])
       if (window[`__STATE__${partialId}`]) {
         // We initialize the store state with the data injected from the server
         store.replaceState(window[`__STATE__${partialId}`])

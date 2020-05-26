@@ -6,7 +6,8 @@ import { sync } from 'vuex-router-sync'
 
 export function createApp (context) {
   const router = createRouter()
-  const store = createStore()
+
+  const store = createStore(context)
 
   // sync so that route state is available as part of the store
   sync(store, router)

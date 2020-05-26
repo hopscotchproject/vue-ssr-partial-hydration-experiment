@@ -5,7 +5,6 @@ export default context => {
   // we will be returning a Promise so that the server can wait until
   // everything is ready before rendering.
   return new Promise((resolve, reject) => {
-    // console.log(context)
     const { app, router, store } = createApp(context)
 
     // set server-side router's location
@@ -13,6 +12,7 @@ export default context => {
 
     // wait until router has resolved possible async components and hooks
     router.onReady(() => {
+
       const matchedComponents = router.getMatchedComponents()
       // no matched routes, reject with 404
       if (!matchedComponents.length) {
@@ -21,12 +21,6 @@ export default context => {
 
       // This `rendered` hook is called when the app has finished rendering
       context.rendered = () => {
-        // After the app is rendered, our store is now
-        // filled with the state from our components.
-        // When we attach the state to the context, and the `template` option
-        // is used for the renderer, the state will automatically be
-        // serialized and injected into the HTML as `window.__INITIAL_STATE__`.
-        // context.state = {}
         context.state = store.state
       }
 

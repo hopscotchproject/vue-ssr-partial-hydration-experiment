@@ -13,7 +13,7 @@ let clientConfig = merge(baseConfig, {
     }
   },
   output: {
-    publicPath: '/dist/',
+    publicPath: '/dist/', //TODO: should go back to the renderer server origin
   },
   plugins: [
     // This plugins generates `vue-ssr-client-manifest.json` in the

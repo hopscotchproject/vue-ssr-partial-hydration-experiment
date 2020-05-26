@@ -2,6 +2,7 @@ const { join } = require('path')
 const express = require('express')
 const { v4 } = require('uuid')
 const cors = require('cors')
+const bodyParser = require('body-parser')
 const { createBundleRenderer } = require('vue-server-renderer')
 const { generateInitScript } = require('./server-utils')
 
@@ -28,10 +29,9 @@ const renderer = createBundleRenderer(join(__dirname, '../dist/vue-ssr-server-bu
 })
 
 server.use(cors())
+server.use(bodyParser.json())
 
 server.use('/dist', express.static('./dist'))
-// server.use('public', express.static('./public'))
-// server.use(express.static('./public'))
 
 server.get('/init', (req, res) => {
   res.header('Content-Type', 'application/javascript')
@@ -40,15 +40,12 @@ server.get('/init', (req, res) => {
   `)
 })
 
-// inside a server handler...
-server.get('*', (req, res) => {
+const handler = (req, res) => {
   res.header('Content-Type', 'text/html')
   const context = {
     url: req.url,
     partialId: `partial_id_${v4().replace(/-/gi, '')}`, // remove hyphen to avoid syntax error when injecting scripts
-    body: req.body,
-    query: req.query,
-    params: req.params
+    body: req.body, // pass along body to be merged to store state on the server side
   }
 
   // No need to pass an app here because it is auto-created by
@@ -60,6 +57,10 @@ server.get('*', (req, res) => {
     }
     res.end(html)
   })
-})
+}
+
+// inside a server handler...
+server.get('*', handler)
+server.post('*', handler)
 
 server.listen(8080)
